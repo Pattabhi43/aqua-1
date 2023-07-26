@@ -12,12 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install dependencies
+      - name: Installing dependencies
         run: |
-          echo "Process is in sequential order"
-          sudo apt-get update -y
-          sudo apt-get install git -y
-          sudo apt-get install python3-pip -y
+          echo "The processes are installing in sequential order"
+          sudo apt update -y
+          sudo apt install git -y
+          sudo apt install python3-pip -y
           pip install pywinrm
 
       - name: Install ansible
