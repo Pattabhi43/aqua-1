@@ -24,11 +24,21 @@ jobs:
         run: |
           echo "Ansible installation starts"
           sudo apt-get update && sudo apt-get install software-properties-common -y && sudo apt-add-repository --yes --update ppa:ansible/ansible
-          if ! ansible --version >/dev/null 2>&1; then
-            echo "Ansible not installed. Workflow stopped"
-          else
-            echo "Ansible is installed"
-          fi
+          
+      - name: Check Ansible Installation and install
+        id: check_ansible
+        run: |
+            if ! ansible --version >/dev/null 2>&1; then
+              echo "Ansible is not installed"
+              sudo apt-get update
+              sudo apt-get install -y ansible
+            else
+              echo "Ansible is already installed"
+            fi
+
+      - name: Ansible config file added
+        run: |
+          cp -r ansible.cfg /etc/ansible/
 
       - name: Checking ansible ping and running playbook
         run: |
