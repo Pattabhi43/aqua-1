@@ -36,6 +36,8 @@ jobs:
           
       - name: Installing Ansible
         run: |
+          sudo apt-add-repository ppa:ansible/ansible
+          sudo apt update -y
           sudo apt install ansible -y
 
       - name: Setting the config file
