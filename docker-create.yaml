@@ -1,0 +1,8 @@
+#This is the docker creation playbook written
+
+- name: Creating Docker environent
+[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[ment[B[A[
+[D[D[D[D[Dhost: localhost
+  gathering_facts: false
+  tasks:
+	- name:
