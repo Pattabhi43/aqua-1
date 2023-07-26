@@ -39,7 +39,7 @@ jobs:
 
       - name: Ansible config file added
         run: |
-          cp -r ansible.cfg /etc/ansible/
+          sudo cp -r ansible.cfg /etc/ansible/
 
       - name: Checking ansible ping and running playbook
         run: |
