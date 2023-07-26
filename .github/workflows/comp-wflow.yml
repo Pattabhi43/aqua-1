@@ -37,7 +37,14 @@ jobs:
       - name: Installing Ansible
         run: |
           sudo apt install ansible -y
+
+      - name: Setting the config file
+        run: |
+          cp -r ansible.cfg /etc/ansible/
           
+      - name: Running Playbook
+        run: |
+          ansible-playbook docker-create.yaml
 
       # Runs a set of commands using the runners shell
      # - name: Run a multi-line script

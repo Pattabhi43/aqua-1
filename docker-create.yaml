@@ -1,8 +1,60 @@
 #This is the docker creation playbook written
 
-- name: Creating Docker environent
-[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[ment[B[A[
-[D[D[D[D[Dhost: localhost
+- name: Creating Docker environment
+  host: localhost
   gathering_facts: false
+  become: true
   tasks:
-	- name:
+    - name:  Install Prerequisites
+      apt:
+        - name:  "{{ items }}"
+          state: Present
+      with_items:
+        - apt-transport-https
+        - curl
+        - ca-certificates
+        - gnupg
+      remote_user: ubuntu
+
+    - name:  Add Docker key
+      remote_user: ubuntu
+      apt_key:
+        - url: https://download.docker.com/linux/ubuntu/gpg
+          state: present
+
+    - name: Set up the stable repository
+      remote_user: ubuntu
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+        state: present
+        update_cache: yes
+      tags:
+        - docker
+
+    - name: Update apt packages
+      remote_user: ubuntu
+      apt:
+        update_cache: yes
+      tags:
+        - docker
+
+    - name:  Install Docker
+      remote_user: ubuntu
+      apt:
+        name: "{{ items }}"
+        state: present
+        update_cache: yes
+      with_items:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+      tags: docker
+
+    - name:  Add user to group
+      remote_user: ubuntu
+      user: "ubuntu"
+      group: "docker"
+      append: true
+      tags: docker
