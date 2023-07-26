@@ -1,8 +1,8 @@
 #This is the docker creation playbook written
 
 - name: Creating Docker environment
-  host: localhost
-  gathering_facts: false
+  hosts: localhost
+  gather_facts: false
   become: true
   tasks:
     - name:  Install Prerequisites
