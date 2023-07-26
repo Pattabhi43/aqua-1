@@ -23,7 +23,7 @@ jobs:
       - name: Install ansible
         run: |
           echo "Ansible installation starts"
-          sudo apt --fix-broken install
+          sudo apt --fix-broken install -y
           sudo apt-get update && sudo apt-get install software-properties-common -y && sudo apt-add-repository --yes --update ppa:ansible/ansible
           
       - name: Check Ansible Installation and install
