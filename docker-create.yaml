@@ -1,56 +1,48 @@
 #This is the docker creation playbook written
 
 - name: Creating Docker environment
-  hosts: localhost
+  hosts: all
   gather_facts: false
   become: true
   tasks:
-    - name:  Install Prerequisites
+    - name: Install aptitude
       apt:
-        - name:  "{{ items }}"
-          state: Present
-      with_items:
-        - apt-transport-https
-        - curl
-        - ca-certificates
-        - gnupg
-      remote_user: ubuntu
+        name: aptitude
+        state: latest
+        update_cache: true
 
-    - name:  Add Docker key
-      remote_user: ubuntu
+    - name: Install required system packages
+      apt:
+        pkg:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+          - python3-setuptools
+        state: latest
+        update_cache: true
+
+    - name: Add Docker GPG apt Key
       apt_key:
-        - url: https://download.docker.com/linux/ubuntu/gpg
-          state: present
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
 
-    - name: Set up the stable repository
-      remote_user: ubuntu
+    - name: Add Docker Repository
       apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
         state: present
-        update_cache: yes
-      tags:
-        - docker
 
-    - name: Update apt packages
-      remote_user: ubuntu
+    - name: Update apt and install docker-ce
       apt:
-        update_cache: yes
-      tags:
-        - docker
+        name: docker-ce
+        state: latest
+        update_cache: true
 
-    - name:  Install Docker
-      remote_user: ubuntu
-      apt:
-        name: "{{ items }}"
-        state: present
-        update_cache: yes
-      with_items:
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-        - docker-buildx-plugin
-        - docker-compose-plugin
-      tags: docker
+    - name: Install Docker Module for Python
+      pip:
+        name: docker
 
     - name:  Add user to group
       remote_user: ubuntu
